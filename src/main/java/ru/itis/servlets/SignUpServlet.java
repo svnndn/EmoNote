@@ -25,7 +25,7 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("error") != null && req.getParameter("error").equals("true")) {
-            req.setAttribute("errorMessage", "Произошла ошибка при регистрации. Попробуйте еще раз."); // сообщение об ошибке
+            req.setAttribute("errorMessage", "Произошла ошибка при регистрации. Попробуйте еще раз.");
         }
         req.getRequestDispatcher("sign-up.ftl").forward(req, resp);
     }
