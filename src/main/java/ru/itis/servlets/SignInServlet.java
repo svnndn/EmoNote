@@ -1,5 +1,12 @@
 package ru.itis.servlets;
 
+import ru.itis.model.User;
+import ru.itis.service.UserService;
+import ru.itis.dao.UserDao;
+import ru.itis.util.PasswordManager;
+import ru.itis.util.connection.DBConnection;
+import ru.itis.util.exception.DBException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,53 +17,65 @@ import java.sql.*;
 
 @WebServlet("/signin")
 public class SignInServlet extends HttpServlet {
-    protected boolean correctData(String email, String passw) throws IOException {
-        boolean isValid = false;
-        try{
-            Connection connection;
-            PreparedStatement statement;
-            ResultSet resultSet;
-            Class.forName("org.postgresql.Driver");
+    private UserService userService;
+    private UserDao userDao;
 
-            String url = "jdbc:postgresql://localhost:5432/EmoNote";
-            String username = "postgres";
-            String password = "rumure56";
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        userService = new UserService();
+        this.userDao = new UserDao();
+    }
 
-            connection = DriverManager.getConnection(url, username, password);
-
-            String query = "SELECT * FROM users WHERE email = ? AND password = ?";
-            statement = connection.prepareStatement(query);
-            statement.setString(1, email);
-            statement.setString(2, passw);
-
-            resultSet = statement.executeQuery();
-
-            isValid = resultSet.next();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getParameter("error") != null && req.getParameter("error").equals("true")) {
+            req.setAttribute("errorMessage", "Произошла ошибка при входе. Попробуйте еще раз.");
         }
-        return isValid;
+        req.getRequestDispatcher("sign-in.ftl").forward(req, resp);
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("sign-in.ftl").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        if(correctData(email,password)) {
-            request.getSession(true).setAttribute("User", email);
-            response.sendRedirect("profile");
+        if (isCorrectData(email, password)) {
+            User user = null;
+            try {
+                user = UserDao.getUserByEmail(email);
+            } catch (DBException e) {
+                throw new RuntimeException(e);
+            }
+            userService.auth(user, request, response);
+
+            response.sendRedirect(request.getContextPath() + "/profile");
         } else {
-            response.sendRedirect("sign-up");
+            request.setAttribute("errorMessage", "Invalid email or password");
+            response.sendRedirect(request.getContextPath() + "/signin?error=true");
         }
+    }
+
+    protected boolean isCorrectData(String email, String passw) throws IOException {
+        boolean isValid = false;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConnection.getConnection();
+
+            String sql = "SELECT password FROM users WHERE email = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String storedPassword = resultSet.getString("password");
+                isValid = PasswordManager.checkPassword(passw, storedPassword);
+            }
+
+        } catch (SQLException | DBException e) {
+            throw new RuntimeException(e);
+        }
+        return isValid;
     }
 }

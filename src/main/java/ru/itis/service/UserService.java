@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserService {
@@ -16,7 +17,7 @@ public class UserService {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DBConnection.getConnection().getConnect();
+            connection = DBConnection.getConnection();
             String sql = "INSERT INTO users (nickname, email, password) VALUES (?, ?, ?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getNickname());
@@ -26,22 +27,13 @@ public class UserService {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DBException("Error occurred while registering user", e);
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
+
     public void auth(User user, HttpServletRequest req, HttpServletResponse resp) {
         req.getSession().setAttribute("user", user);
     }
+
     public boolean isNonAnonymous(HttpServletRequest req, HttpServletResponse resp) {
         return req.getSession().getAttribute("user") != null;
     }

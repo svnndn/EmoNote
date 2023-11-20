@@ -7,27 +7,21 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static DBConnection connection;
+    private static Connection connection;
 
-    public static DBConnection getConnection() throws DBException {
-        if(connection == null){
-            connection = new DBConnection();
+    public static Connection getConnection() throws DBException {
+        if (connection == null) {
+            initializeConnection();
         }
         return connection;
     }
 
-    private Connection connect;
-
-    private DBConnection() throws DBException {
+    private static void initializeConnection() throws DBException {
         try {
-            Class.forName("org.postgresql.Driver").newInstance();
-            connect = DriverManager.getConnection("jdbc:postgresql://localhost:5432/EmoNote_db", "postgres", "rumure56");
-        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/EmoNote_db", "postgres", "rumure56");
+        } catch (SQLException | ClassNotFoundException e) {
             throw new DBException("Can't connect to DB.", e);
         }
-    }
-
-    public Connection getConnect() {
-        return connect;
     }
 }
