@@ -1,0 +1,63 @@
+body {
+    background-image: url('../images/profile.jpg');
+    background-size: auto;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px; /* Отступ сверху */
+    font-size: 4em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Тень текста */
+    color: white;
+}
+
+.note {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.mood-image {
+    width: 70px;
+    height: 70px;
+    margin: 5px;
+}
+
+.profile-card {
+    width: auto;
+    border: 5px solid #b61de0;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 80px auto;
+    margin-left: 15px;
+    margin-right: 15px;
+    background-color: lavender;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.profile-header h1 {
+    text-align: center;
+    color: #ffffff;
+}
+
+.profile-details {
+    margin-top: 20px;
+}
+
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.profile-info label {
+    font-weight: bold;
+    color: #555;
+}
+
+.profile-info p {
+    color: #666;
+    line-height: 1.5;
+}

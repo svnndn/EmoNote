@@ -1,0 +1,60 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f6f6f6;
+    background-image: url('../images/journal.jpg');
+    background-size: auto;
+}
+
+.mood-image {
+    width: 70px;
+    height: 70px;
+    margin: 5px;
+}
+
+.note {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.note h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.note p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.note .nickname {
+    font-weight: bold;
+    color: #0079D3;
+}
+
+.note .dateTime {
+    color: #888;
+}
+
+.note-details {
+    width: 1800px;
+}
+
+.note .moodRating {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-top: 60px;
+    font-size: 3em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

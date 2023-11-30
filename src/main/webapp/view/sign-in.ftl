@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign in</title>
-    <link rel="stylesheet" type="text/css" href="styles/form_style.css">
+    <link rel="stylesheet" type="text/css" href="/EmoNote/styles/form_style.css">
 </head>
-<#include "menu.ftl">
 <body>
+<header>
+    <#include "includes/menu.ftl">
+</header>
 <div class="wave"></div>
 <div class="wave"></div>
 <div class="wave"></div>
-<div class="column"><form method="post">
+<div class="column" style="box-sizing: revert !important">
+    <h1>Sign in</h1>
+    <form method="post">
         <div>
             <label>
                 <input name="email" type="email" placeholder="Email"/>

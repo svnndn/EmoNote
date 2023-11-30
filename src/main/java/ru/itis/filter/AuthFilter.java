@@ -1,6 +1,8 @@
 package ru.itis.filter;
 
+import ru.itis.dao.UserDao;
 import ru.itis.service.UserService;
+import ru.itis.util.exception.DBException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,13 +15,20 @@ import java.io.IOException;
 
 @WebFilter("/*")
 public class AuthFilter extends HttpFilter {
-    private static final String[] securedPaths = new String[]{"/book/create"};
+    private static final String[] securedPaths = new String[]{"/profile", "/notes", "/editnote", "/deletenote"};
     private UserService userService;
+    private UserDao userDao;
 
     @Override
     public void init(FilterConfig config) throws ServletException {
         super.init(config);
-        userService = new UserService();
+        userDao = new UserDao();
+        try {
+            userDao.init();
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
+        userService = new UserService(userDao);
     }
 
     @Override
@@ -32,7 +41,7 @@ public class AuthFilter extends HttpFilter {
             }
         }
         if (prot && !userService.isNonAnonymous(req, res)) {
-            res.sendRedirect(req.getContextPath() + "/login");
+            res.sendRedirect(req.getContextPath() + "/signin");
         } else {
             if (userService.isNonAnonymous(req, res)) {
                 req.setAttribute("user", userService.getUser(req, res));

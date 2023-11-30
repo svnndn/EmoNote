@@ -9,11 +9,13 @@ import ru.itis.util.exception.DBException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
+
 
 @WebServlet("/signin")
 public class SignInServlet extends HttpServlet {
@@ -23,29 +25,63 @@ public class SignInServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        userService = new UserService();
-        this.userDao = new UserDao();
+        userDao = new UserDao();
+        try {
+            userDao.init();
+            userService = new UserService(userDao);
+        } catch (DBException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (userService.isNonAnonymous(req, resp)) {
+            resp.sendRedirect(req.getContextPath() + "/");
+            return;
+        }
+
         if (req.getParameter("error") != null && req.getParameter("error").equals("true")) {
             req.setAttribute("errorMessage", "Произошла ошибка при входе. Попробуйте еще раз.");
+        }
+
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie: cookies) {
+                if (cookie.getName().equals("user_id")) {
+                    resp.sendRedirect(req.getContextPath() + "/profile");
+                    return;
+                }
+            }
         }
         req.getRequestDispatcher("sign-in.ftl").forward(req, resp);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String rememberMe = request.getParameter("remember_me");
 
         if (isCorrectData(email, password)) {
             User user = null;
             try {
-                user = UserDao.getUserByEmail(email);
+                Connection connection = DBConnection.getConnection();
+                user = userDao.getUserByEmail(email, connection);
             } catch (DBException e) {
                 throw new RuntimeException(e);
             }
             userService.auth(user, request, response);
+
+//            if (rememberMe != null && rememberMe.equals("on")) {
+//                Cookie cookie = new Cookie("remember_me", "true");
+//                cookie.setMaxAge(-1);
+//                response.addCookie(cookie);
+//            }
+//
+//            Cookie cookie = new Cookie("user_id", String.valueOf(user.getId()));
+//            cookie.setMaxAge(-1);
+//            response.addCookie(cookie);
 
             response.sendRedirect(request.getContextPath() + "/profile");
         } else {

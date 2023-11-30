@@ -29,38 +29,29 @@ create table mood_journal
     foreign key (mood_rating) references mood_categories(id)
 );
 
-create table activity_categories
-(
-    id serial primary key,
-    title varchar(50) unique not null,
-    description text
-);
 
-create table events_activities
-(
-    id serial primary key,
-    user_id int,
-    date_time timestamp,
-    title varchar(255) not null,
-    notes text,
-    category int not null,
-    mood_rating int not null,
-    foreign key (user_id) references users(id),
-    foreign key (category) references activity_categories(id),
-    foreign key (mood_rating) references mood_categories(id)
-);
-
-create table recommendations
-(
-    id serial primary key,
-    text text,
-    source varchar(100)
-);
-
-create table mood_history
-(
-    id serial primary key,
-    mood_id int not null,
-    date_time timestamp,
-    foreign key (mood_id) references mood_categories(id)
-);
+insert into mood_categories (id, title) values (1, '1.png');
+insert into mood_categories (id, title) values (2, '2.png');
+insert into mood_categories (id, title) values (3, '3.png');
+insert into mood_categories (id, title) values (4, '4.png');
+insert into mood_categories (id, title) values (5, '5.png');
+insert into mood_categories (id, title) values (6, '6.png');
+insert into mood_categories (id, title) values (7, '7.png');
+insert into mood_categories (id, title) values (8, '8.png');
+insert into mood_categories (id, title) values (9, '9.png');
+insert into mood_categories (id, title) values (10, '10.png');
+insert into mood_categories (id, title) values (11, '11.png');
+insert into mood_categories (id, title) values (12, '12.png');
+insert into mood_categories (id, title) values (13, '13.png');
+insert into mood_categories (id, title) values (14, '14.png');
+insert into mood_categories (id, title) values (15, '15.png');
+insert into mood_categories (id, title) values (16, '16.png');
+insert into mood_categories (id, title) values (17, '17.png');
+insert into mood_categories (id, title) values (18, '18.png');
+insert into mood_categories (id, title) values (19, '19.png');
+insert into mood_categories (id, title) values (20, '20.png');
+insert into mood_categories (id, title) values (21, '21.png');
+insert into mood_categories (id, title) values (22, '22.png');
+insert into mood_categories (id, title) values (23, '23.png');
+insert into mood_categories (id, title) values (24, '24.png');
+insert into mood_categories (id, title) values (25, '25.png');
