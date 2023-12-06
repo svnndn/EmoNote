@@ -41,8 +41,8 @@
 }
 
 .more-button {
-    background-color: #5c67ff;
-    box-shadow: 0px 0px 0px 4px rgba(92, 103, 255, 0.3);
+    background-color: #855cff;
+    box-shadow: 0px 0px 0px 4px rgba(157, 92, 255, 0.3);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -55,11 +55,11 @@
     justify-content: center;
     color: #fff;
     position: relative;
-    z-index: 2;
+    z-index: 11;
 }
 .more-button:hover, .more-button:focus {
-    box-shadow: 0px 0px 0px 8px rgba(92, 103, 255, 0.3);
-    background-color: #4854ff;
+    box-shadow: 0px 0px 0px 8px rgba(133, 92, 255, 0.3);
+    background-color: #7648ff;
 }
 .more-button:focus {
     outline: 0;
@@ -80,6 +80,7 @@
     transform: scale(0);
     transform-origin: bottom right;
     transition: all 0.3s ease 0.1s;
+    z-index: 10;
 }
 .more-button-list li {
     opacity: 0;

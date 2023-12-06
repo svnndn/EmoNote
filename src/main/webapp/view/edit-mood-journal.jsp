@@ -29,6 +29,9 @@
   <script src="/EmoNote/view/js/emotion-script.js"></script>
 </head>
 <body>
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="wave"></div>
 <div class="column">
   <h1>Edit Mood Journal</h1>
   <form action="editnote" method="post">

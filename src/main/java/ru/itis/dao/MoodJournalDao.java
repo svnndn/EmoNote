@@ -10,9 +10,12 @@ import java.util.List;
 
 public class MoodJournalDao {
     private Connection connection;
+    private CommentDao commentDao;
 
     public void init() throws DBException {
         connection = DBConnection.getConnection();
+        commentDao = new CommentDao();
+        commentDao.init();
     }
     public void save(MoodJournal moodJournal) throws DBException {
         connection = DBConnection.getConnection();
@@ -107,6 +110,7 @@ public class MoodJournalDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                      "DELETE FROM mood_journal WHERE id = ?")
         ) {
+            commentDao.deleteAllByMoodJournalId(id);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

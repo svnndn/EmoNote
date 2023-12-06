@@ -44,7 +44,6 @@ public class DeleteMoodJournalServlet extends HttpServlet {
         } catch (DBException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(moodJournal.getId());
         req.setAttribute("moodJournalDto", moodJournal);
         req.getRequestDispatcher("delete-note.ftl").forward(req, resp);
     }

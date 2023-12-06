@@ -12,10 +12,13 @@ import java.util.List;
 public class UserDao {
     private Connection connection;
     private MoodJournalDao moodJournalDao;
+    private CommentDao commentDao;
 
     public void init() throws DBException {
         connection = DBConnection.getConnection();
         moodJournalDao = new MoodJournalDao();
+        commentDao = new CommentDao();
+        commentDao.init();
         moodJournalDao.init();
     }
 
@@ -145,6 +148,7 @@ public class UserDao {
 
         try {
             moodJournalDao.deleteAllByUserId(userId);
+            commentDao.deleteAllByUserId(userId);
             connection = DBConnection.getConnection();
             String sql = "DELETE FROM users WHERE id = ?";
             preparedStatement = connection.prepareStatement(sql);

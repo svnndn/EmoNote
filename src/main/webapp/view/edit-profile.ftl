@@ -10,6 +10,9 @@
 </header>
 <body>
 <#include "includes/side_menu.ftl">
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="wave"></div>
 <div class="column" style="box-sizing: revert !important"><h1>Edit Profile</h1>
     <form action="/EmoNote/edit" method="post">
         <label for="name">Name:</label>

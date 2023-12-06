@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebFilter("/*")
 public class AuthFilter extends HttpFilter {
-    private static final String[] securedPaths = new String[]{"/profile", "/notes", "/editnote", "/deletenote"};
+    private static final String[] securedPaths = new String[]{"/profile", "/edit", "/edit_main", "comments", "/notes", "/editnote", "/deletenote"};
     private UserService userService;
     private UserDao userDao;
 

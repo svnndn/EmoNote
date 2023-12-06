@@ -29,6 +29,16 @@ create table mood_journal
     foreign key (mood_rating) references mood_categories(id)
 );
 
+create table comment
+(
+    id serial primary key,
+    user_id int,
+    mood_journal_id int,
+    date_time timestamp,
+    notes text not null,
+    foreign key (user_id) references users(id),
+    foreign key (mood_journal_id) references mood_journal(id)
+);
 
 insert into mood_categories (id, title) values (1, '1.png');
 insert into mood_categories (id, title) values (2, '2.png');

@@ -73,16 +73,6 @@ public class SignInServlet extends HttpServlet {
             }
             userService.auth(user, request, response);
 
-//            if (rememberMe != null && rememberMe.equals("on")) {
-//                Cookie cookie = new Cookie("remember_me", "true");
-//                cookie.setMaxAge(-1);
-//                response.addCookie(cookie);
-//            }
-//
-//            Cookie cookie = new Cookie("user_id", String.valueOf(user.getId()));
-//            cookie.setMaxAge(-1);
-//            response.addCookie(cookie);
-
             response.sendRedirect(request.getContextPath() + "/profile");
         } else {
             request.setAttribute("errorMessage", "Invalid email or password");

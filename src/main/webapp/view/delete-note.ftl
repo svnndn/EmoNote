@@ -9,6 +9,9 @@
     <#include "includes/menu.ftl">
 </header>
 <body>
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="wave"></div>
 <div class="column" style="box-sizing: revert !important">
     <h1>Delete Note</h1>
 
